@@ -2,16 +2,18 @@
 
 　　版本主要变动
 
-    - 支持零配置
-    - 必须通过`mode`或者`--model`选项配置`webpack`运行模式。仅支持`production`（生产环境模式）和`development`（开发环境模式）两种模式。前者注重优化，不支持自动化监听；后者注重版本迭代，支持自动化监听
+- 支持零配置
+- 必须通过`mode`或者`--model`选项配置`webpack`运行模式。仅支持`production`（生产环境模式）和`development`（开发环境模式）两种模式。前者注重优化，不支持自动化监听；后者注重版本迭代，支持自动化监听
 
 
 ## 环境搭建
 
 　　确保已经安装了`Node`环境
 
-　　`npm i -g webpack webpack-cli`
-　　`npm i --save-dev webpack webpack-cli`
+```
+    npm i -g webpack webpack-cli
+    npm i --save-dev webpack webpack-cli
+```
 
 　　全局（局部）安装`webpack`和`webpack-cli`（`webpack4`要求同时安装`webpack`和`webpack-cli`，而`webpack3`仅需要安装`webpack`即可。）
 
@@ -56,6 +58,28 @@
 
 ### 配置`webpack.config.js`文件
 
+　　通过`webpack.config.js`文件可以配置`webpack`的打包过程
+
+```javascript
+
+    // webpack.config.js
+    const path = require('path');
+
+    module.exports = {
+        // 指定为开发环境
+        mode: "development",
+        // 指定入口文件（输入）【绝对路径或者相对路径（以 ./ 或者 ../ 开头）】
+        entry: "./src/js/entry.js",
+        // 指定打包后的文件（输出）【绝对路径或者相对路径（以 ./ 或者 ../ 开头）】
+        output: {
+            // 指定输出文件名称
+            filename: "bundle.js",
+            // 指定输出文件所在目录
+            path: path.resolve(__dirname, 'dist/js'),
+        }
+    };
+
+```
 
 
 
