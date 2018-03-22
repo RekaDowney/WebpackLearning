@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: antiquewhite;
+}
+
+.fgRed {
+    color: red;
+}
+
+.fgGreen {
+    color: green;
+}
+
+.fgYellow {
+    color: yellow;
+}
+
+.fgBlue {
+    color: blue;
+}
+
+.bgRed {
+    background-color: red;
+}
+
+.bgGreen {
+    background-color: green;
+}
+
+.bgYellow {
+    background-color: yellow;
+}
+
+.bgBlue {
+    background-color: blue;
+}
+

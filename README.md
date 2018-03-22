@@ -122,7 +122,7 @@
 
 ```javascript
 
-    // config/03-webpack.config.js
+    // config/03-json-webpack.config.js
     const path = require('path');
 
     module.exports = {
@@ -142,7 +142,8 @@
 
 ```
 
-　　执行`webpack --config config/03-webpack.config.js`命令可以将`src/js/03-json-entry.js`文件及其依赖打包成`dist/js/03-json-entry.js`。
+　　执行`webpack --config config/03-json-webpack.config.js`命令可以将`src/js/03-json-entry.js`文件及其依赖打包成`dist/js/03-json-entry.js`。
 
 
 
+General

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webpack 打包 CSS 模块</title>
+    <!-- 通过 webpack --config config/04-css-webpack.config.js 命令打包生成 04-css.js 模块 -->
+    <!-- 此时 CSS 也会被打包到 JS 文件中，不需要通过 link 或者 style 标签特殊处理（style-loader 会帮我们处理） -->
+</head>
+<body>
+
+<script type="text/javascript" src="../../dist/js/04-css.js"></script>
+
+</body>
+</html>
