@@ -69,18 +69,26 @@
         // 指定为开发环境
         mode: "development",
         // 指定入口文件（输入）【绝对路径或者相对路径（以 ./ 或者 ../ 开头）】
-        entry: "./src/js/entry.js",
-        // 指定打包后的文件（输出）【绝对路径或者相对路径（以 ./ 或者 ../ 开头）】
+        // entry: "./src/js/entry.js",
+        entry: path.resolve(__dirname, "./src/js/01-entry.js"),
+        // 指定打包后的文件（输出）
         output: {
             // 指定输出文件名称
             filename: "bundle.js",
-            // 指定输出文件所在目录
+            // 指定输出文件所在目录【只能够是绝对路径】
             path: path.resolve(__dirname, 'dist/js'),
         }
     };
 
 ```
 
+*特别注意*：一旦创建了`webpack.config.js`文件，那么之后如果再使用`webpack ${inputJsOrInputJsDir} -o ${distJs}`命令打包，那么会同时执行`webpack.config.js`的配置，从而导致部分`JS`模块的内容造成冲突。
+
+```
+
+    `webpack`默认会寻找目录下的`webpack.config.js`或者`webpackfile.js`文件，两者是等效的。可以通过`webpack --config ${configPath}`读取指定配置文件。
+
+```
 
 
 

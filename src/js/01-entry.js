@@ -1,4 +1,4 @@
-import * as math from './math';
+import * as math from './util/math';
 import $ from 'jquery';
 
 $('body')

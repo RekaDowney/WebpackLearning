@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webpack 导入 JSON 文件作为一个模块</title>
+    <!-- 注意：无法使用下面这条命令正确打包，原因是同时执行了 webpack.config.js 的配置文件 -->
+    <!-- // 通过 webpack src/js/02-json-entry.js -o dist/js/03-json-entry.js 命令指定打包到 dist/js/03-json-entry.js -->
+
+    <!-- 通过 webpack --config config/03-webpack.config.js 命令执行指定配置文件进行打包 -->
+</head>
+<body>
+<script type="text/javascript" src="../../dist/js/03-json-entry.js"></script>
+</body>
+</html>
