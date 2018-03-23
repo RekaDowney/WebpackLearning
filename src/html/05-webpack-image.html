@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webpack 打包 图片 模块</title>
+    <!-- 通过 webpack --config config/05-image-webpack.config.js 命令打包生成 04-image.js 模块 -->
+    <!-- 由于 file-loader 在打包图片的时候会打包到 webpack#output#path 目录下，而图片是从当前 html 文件所在目录加载，因此会造成 404 -->
+    <!-- 方案1是将 html 移到 dist/js 目录中；方案2是添加 webpack#publicPath 选项 -->
+    <!-- 方案1是临时性的；方案2会对所有配置造成影响（热部署），不建议使用 -->
+</head>
+<body>
+
+<script type="text/javascript" src="../../dist/js/05-image.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    clear: both;
+    margin: 5px auto;
+    text-align: center;
+    width: 700px;
+    border-collapse: collapse;
+}
+
+table th {
+    padding: 3px;
+    background: url("../img/blue.jpg") repeat-x;
+    border: 1px solid lightgray;
+}
+
+table td {
+    padding: 3px;
+    background: url("../img/yellow.jpg") repeat-x;
+    border: 1px solid lightgray;
+}
+
+.imgBox {
+    width: 400px;
+    height: 200px;
+    background: url("../img/gt8.jpg") no-repeat;
+}

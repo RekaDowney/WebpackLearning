@@ -90,7 +90,7 @@
 
 ## 打包 JSON 模块
 
-　　`webpack`允许通过`import`方式直接导入`JSON`文件，随后将`JSON`文件打包到`JS`文件中一起发布。
+　　`webpack`允许通过`import data/{prop} from ${jsonFile}`方式直接导入`JSON`文件，随后将`JSON`文件打包到`JS`文件中一起发布。
 
 *例子*
 
@@ -144,6 +144,85 @@
 
 　　执行`webpack --config config/03-json-webpack.config.js`命令可以将`src/js/03-json-entry.js`文件及其依赖打包成`dist/js/03-json-entry.js`。
 
+## 打包 CSS 模块
 
+　　`webpack`允许通过`import ${cssFile}`方式直接导入`CSS`文件，随后借助`css-loader`加载`CSS`文件并通过`style-loader`将`CSS`文件渲染到`HTML`的`style`标签。
 
-General
+*例子*
+
+```stylesheet
+
+    // src/css/04-style.css
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: antiquewhite;
+    }
+
+    .fgYellow {
+        color: yellow;
+    }
+
+    .bgRed {
+        background-color: red;
+    }
+
+```
+
+```javascript
+
+    // src/js/04-css.js
+    // 通过 css-loader 加载 css 文件
+    import '../css/04-style.css';
+
+    import $ from 'jquery';
+
+    $('body').append($('<p/>').addClass('bgRed').addClass("fgYellow").css('font-size', '40px').text('这是一个p标签'));
+
+```
+
+```javascript
+
+    // config/04-css-webpack.config.js
+    const path = require('path');
+
+    module.exports = {
+        mode: "development",
+        entry: path.resolve(__dirname, '../src/js/04-css.js'),
+        output: {
+            filename: "04-css.js",
+            path: path.resolve(__dirname, '../dist/js')
+        },
+        module: {
+            rules: [{
+                // 当文件名称满足 /\.css$/ 正则表达式时，执行 style-loader 和 css-loader
+                test: /\.css$/,
+                use: [
+                    // 只有先通过 css-loader 加载完毕 CSS 之后才能够执行 style-loader 创建 style 标签
+                    // 由于 webpack loader 的特性是：一组链式的 loader 将按照相反的顺序执行
+                    // 因此 style-loader 必须放在 css-loader 前面，这样 css-loader 才能够先于 style-loader 执行
+                    {
+                        // style-loader 负责将 css-loader 加载的 CSS 样式通过使用 <style> 注入到我们的 HTML 页面中
+                        loader: 'style-loader'
+                    },
+                    {
+                        // css-loader 负责加载通过 import 引入的 CSS 样式
+                        loader: 'css-loader'
+                    },
+                ]
+            }]
+        }
+    };
+
+```
+
+　　首先执行`npm i -D css-loader style-loader`安装`css-loader`和`style-loader`开发依赖。
+
+　　执行`webpack --config config/04-css-webpack.config.js`命令可以将`src/js/04-css.js`文件及其依赖打包成`dist/js/04-css.js`。
+
+## 打包 IMAGE 模块
+
+　　`webpack`允许通过`import ${img} from ${imgFile}`方式直接导入图片文件。或者通过直接在`CSS`文件中导入图片。

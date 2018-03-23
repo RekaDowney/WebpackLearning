@@ -4,8 +4,10 @@
   "dependencies": {},
   "devDependencies": {
     "css-loader": "^0.28.11",
+    "file-loader": "^1.1.11",
     "jquery": "^2.2.4",
     "style-loader": "^0.20.3",
+    "url-loader": "^1.0.1",
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.12"
   }
