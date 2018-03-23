@@ -328,3 +328,111 @@
 
 　　随后将`html`文件直接放在`dist/js`目录下。可以看到表格样式的两张图片是以`DataURL`方式存在（小于8KB），而另一张图片则从当前`html`文件所在目录下搜索。
 
+## 插件
+
+### clean-webpack-plugin 和 html-webpack-plugin 插件
+
+*实例*
+
+```javascript
+
+    // src/js06-plugin.js
+    import $ from 'jquery';
+    import '../css/05-table.css';
+
+    let tbl = '<table>' +
+        '<thead><tr><th>ID</th><th>名称</th><th>性别</th></tr></thead>' +
+        '<tbody>' +
+        '<tr><td>1</td><td>小明</td><td>男</td></tr>' +
+        '<tr><td>2</td><td>小红</td><td>女</td></tr>' +
+        '<tr><td>3</td><td>小白</td><td>男</td></tr>' +
+        '</tbody>' +
+        '</table>';
+
+    $('body').prepend($(tbl));
+
+```
+
+```html
+
+    // src/html/06-webpack-plugin.html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>webpack 插件</title>
+        <!--
+            执行 webpack --config config/06-plugin-webpack.config.js 打包模块并
+            通过 html-webpack-plugin 插件将当前 html 文件复制到 dist/js 目录下，同时添加必要的 script 标签
+        -->
+    </head>
+    <body>
+
+    <div class="imgBox">
+    </div>
+    </body>
+    </html>
+
+```
+
+```javascript
+
+    // config/06-plugin-webpack.config.js
+    let path = require('path');
+    let CleanWebpackPlugin = require('clean-webpack-plugin');
+    let HtmlWebpackPlugin = require('html-webpack-plugin');
+
+    module.exports = {
+        mode: 'development',
+        entry: path.resolve(__dirname, '../src/js/06-plugin.js'),
+        output: {
+            filename: "06-plugin.js",
+            path: path.resolve(__dirname, '../dist/js/')
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.css$/,
+                    loader: "style-loader!css-loader"
+                }, {
+                    test: /\.(jpg|jpeg|png|gif)$/,
+                    use: [
+                        {
+                            loader: "url-loader",
+                            options: {
+                                limit: 8192
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        plugins: [
+            // 将 src/html/06-webpack-plugin.html 文件作为模板一起打包到 dist/js 目录下，同时自动添加 script 标签引入 06-plugin.js 文件
+            // 注意 plugin 是从项目根目录下开始搜索文件
+            new HtmlWebpackPlugin({template: './src/html/06-webpack-plugin.html'}),
+            // 清除之前打包的文件（即清空 root 下的 dist 目录）
+            new CleanWebpackPlugin(['dist'], {
+                // 通过 root 指定根路径（必须是绝对路径）
+                root: path.resolve(__dirname, '../'),
+                // 可以通过 exclude 排除不删除的目录
+                // exclude: ['img']
+            })
+        ]
+    };
+
+```
+
+　　首先执行`npm i -D clean-webpack-plugin html-webpack-plugin`安装`clean-webpack-plugin`和`html-webpack-plugin`开发依赖。
+
+　　执行`webpack --config config/06-plugin-webpack.config.js`命令，`CleanWebpackPlugin`会先清空目录，然后`HtmlWebpackPlugin`会根据`html`模板生成`dist/js/index.html`文件，同时在`body`末尾添加`script`标签引入`06-plugin.js`文件。
+
+　　同时对`JS`、`CSS`以及图片进行模块化打包。最后可以直接访问`dist/js/index.html`看到效果。
+
+```txt
+
+    // CleanWebpackPlugin 执行日志
+    clean-webpack-plugin: L:\Code\WebStorm_Code\WebpackLearning\dist has been removed.
+    clean-webpack-plugin: 1 file(s) excluded - img
+
+```
