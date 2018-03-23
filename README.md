@@ -226,3 +226,105 @@
 ## 打包 IMAGE 模块
 
 　　`webpack`允许通过`import ${img} from ${imgFile}`方式直接导入图片文件。或者通过直接在`CSS`文件中导入图片。
+
+```css
+
+    // src/css/05-table.css
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    table {
+        clear: both;
+        margin: 5px auto;
+        text-align: center;
+        width: 700px;
+        border-collapse: collapse;
+    }
+
+    table th {
+        padding: 3px;
+        background: url("../img/blue.jpg") repeat-x;
+        border: 1px solid lightgray;
+    }
+
+    table td {
+        padding: 3px;
+        background: url("../img/yellow.jpg") repeat-x;
+        border: 1px solid lightgray;
+    }
+
+    .imgBox {
+        width: 400px;
+        height: 200px;
+        background: url("../img/gt8.jpg") no-repeat;
+    }
+
+```
+
+```javascript
+
+    // src/js/05-table.css
+    import '../css/05-table.css';
+
+    import $ from 'jquery';
+
+    let tbl = '<table>' +
+        '<thead><tr><th>ID</th><th>名称</th><th>性别</th></tr></thead>' +
+        '<tbody>' +
+        '<tr><td>1</td><td>小明</td><td>男</td></tr>' +
+        '<tr><td>2</td><td>小红</td><td>女</td></tr>' +
+        '<tr><td>3</td><td>小白</td><td>男</td></tr>' +
+        '</tbody>' +
+        '</table>';
+
+    $('body').append($(tbl)).append($('<div/>').addClass('imgBox'));
+
+```
+
+```javascript
+
+    // config/05-image-webpack.config.js
+    let path = require('path');
+
+    module.exports = {
+        mode: 'development',
+        entry: path.resolve(__dirname, '../src/js/05-image.js'),
+        output: {
+            filename: "05-image.js",
+            path: path.resolve(__dirname, '../dist/js')
+        },
+        module: {
+            rules: [{
+                test: /\.(jpg|jpeg|gif|png)$/,
+                use: [
+                    {
+                        // url-loader 跟 file-loader
+                        // 这里的 outputPath 和 useRelativePath 两个参数在文件大于 8KB 时会传递到 file-loader 中，作为 file-loader 的配置项处理
+                        loader: "url-loader?outputPath=img/&useRelativePath=true",
+                        options: {
+                            // 当文件小于 8KB 时，直接生成 DataURL 而不是加载文件
+                            limit: 8192,
+                            // 当文件大于 8KB 时，采用 file-loader 来加载文件
+                            // 由于 url-loader 默认采用了 file-loader 作为次选加载器（文件大小大于指定值时的加载器）
+                            // url-loader 内部封装了 file-loader，因此安装 url-loader 的时候可以不添加 file-loader
+                            // fallback: 'file-loader'
+                        }
+                    }
+                ]
+            }, {
+                test: /\.css$/,
+                loader: "style-loader!css-loader"
+            }]
+        }
+    };
+
+```
+
+　　首先执行`npm i -D url-loader`安装`url-loader`开发依赖。
+
+　　执行`webpack --config config/05-image-webpack.config.js`命令可以将`src/js/05-image.js`文件及其依赖打包成`dist/js/05-image.js`。
+
+　　随后将`html`文件直接放在`dist/js`目录下。可以看到表格样式的两张图片是以`DataURL`方式存在（小于8KB），而另一张图片则从当前`html`文件所在目录下搜索。
+
